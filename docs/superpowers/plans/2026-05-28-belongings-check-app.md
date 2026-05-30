@@ -569,7 +569,7 @@ export default ItemCard
 - Create: `src/components/ItemList.tsx`
 - Modify: `src/App.tsx`
 
-- [] **Step 1: ItemList.tsx を作成する**
+- [x] **Step 1: ItemList.tsx を作成する**
 
 ```tsx
 import ItemCard from './ItemCard'
@@ -611,7 +611,7 @@ function ItemList({ items, onToggle, onDelete }: Props) {
 export default ItemList
 ```
 
-- [ ] **Step 2: App.tsx を最終形に書き直す**
+- [x] **Step 2: App.tsx を最終形に書き直す**
 
 ```tsx
 import React from 'react'
@@ -674,7 +674,7 @@ function App() {
 export default App
 ```
 
-- [ ] **Step 3: 最終動作確認する**
+- [x] **Step 3: 最終動作確認する**
 
 以下をすべて確認する:
 - アイテムの追加・チェック・削除が動く

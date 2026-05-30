@@ -14,10 +14,10 @@ function ItemCard({ item, onToggle, onDelete }: Props) {
   return (
     <li className="flex items-center gap-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50">
       <input
-        type="text"
+        type="checkbox"
         checked={item.checked}
         onChange={() => onToggle(item.id)}
-        className="w-4 h-4 accent-blue-500"
+        className="w-4 h-4 accent-blue-500 border-2 rounded-2xl"
       />
       <span
         className={`flex-1 text-sm ${
