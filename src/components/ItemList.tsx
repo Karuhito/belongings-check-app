@@ -34,4 +34,4 @@ function ItemList({ items, onToggle, onDelete }: Props) {
   );
 }
 
-export default ItemList
+export default ItemList;
