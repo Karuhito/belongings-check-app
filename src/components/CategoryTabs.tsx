@@ -54,26 +54,13 @@ function CategoryTabs({
             key={category.id}
             type="button"
             onClick={() => onTabChange(category.id)}
-            className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center gap-1 ${
+            className={`px-3 py-1 rounded-full text-sm transition-colors ${
               activeTab === category.id
                 ? 'bg-blue-500 text-white font-medium'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             {category.name}
-            {activeTab === category.id && (
-              <span
-                role="button"
-                aria-label={`${category.name}を削除`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDeleteCategory(category.id);
-                }}
-                className="ml-1 cursor-pointer hover:text-red-200"
-              >
-                🗑
-              </span>
-            )}
           </button>
         ))}
         <button
@@ -83,6 +70,15 @@ function CategoryTabs({
         >
           ＋
         </button>
+        {activeTab !== 'all' && (
+          <button
+            type="button"
+            onClick={() => onDeleteCategory(activeTab)}
+            className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
+          >
+            🗑 カテゴリを削除
+          </button>
+        )}
       </div>
       {showAddForm && (
         <div className="flex gap-2 mt-2">
