@@ -9,7 +9,7 @@ type Item = {
 type Props = {
   items: Item[];
   onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
 };
 
 function ItemList({ items, onToggle, onDelete }: Props) {
@@ -34,4 +34,4 @@ function ItemList({ items, onToggle, onDelete }: Props) {
   );
 }
 
-export default ItemList
+export default ItemList;

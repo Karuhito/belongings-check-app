@@ -7,7 +7,7 @@ type Item = {
 type Props = {
   item: Item;
   onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
 };
 
 function ItemCard({ item, onToggle, onDelete }: Props) {
@@ -36,13 +36,15 @@ function ItemCard({ item, onToggle, onDelete }: Props) {
       >
         {item.label}
       </span>
-      <button
-        type="button"
-        onClick={() => onDelete(item.id)}
-        className="text-gray-300 hover:text-red-400 text-sm"
-      >
-        x
-      </button>
+      {onDelete && (
+        <button
+          type="button"
+          onClick={() => onDelete(item.id)}
+          className="text-gray-300 hover:text-red-400 text-sm"
+        >
+          x
+        </button>
+      )}
     </li>
   );
 }
