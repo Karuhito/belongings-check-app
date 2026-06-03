@@ -70,7 +70,7 @@ function App() {
   }, [categories]);
 
   const handleAddCategory = (name: string) => {
-    const newCategory: Category = { id: Date.now().toString(), name };
+    const newCategory: Category = { id: crypto.randomUUID(), name };
     setCategories([...categories, newCategory]);
     setActiveTab(newCategory.id);
   };
@@ -84,7 +84,7 @@ function App() {
   const handleAdd = (label: string) => {
     if (activeTab === 'all') return;
     const newItem: Item = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       label,
       checked: false,
       categoryId: activeTab,
