@@ -106,6 +106,14 @@ function App() {
     ? items
     : items.filter((item) => item.categoryId === activeTab);
 
+  const handleToggleAll = () => {
+    const allChecked = displayedItems.length > 0 && displayedItems.every(item => item.checked);
+    const displayedIds = new Set(displayedItems.map(item => item.id));
+    setItems(items.map(item =>
+      displayedIds.has(item.id) ? { ...item, checked: !allChecked } : item
+    ));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center py-10">
       <div className="w-full max-w-md bg-white rounded-xl shadow p-6">
@@ -122,6 +130,21 @@ function App() {
           <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
             カテゴリタブでアイテムを追加・削除できます
           </p>
+        )}
+        {displayedItems.length > 0 && (
+          <div className="flex justify-end mb-3">
+            <button
+              type="button"
+              onClick={handleToggleAll}
+              className={`text-xs px-3 py-1 rounded-full border transition-colors ${
+                displayedItems.every(item => item.checked)
+                  ? 'bg-green-100 text-green-700 border-green-300 hover:bg-green-200'
+                  : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
+              }`}
+            >
+              {displayedItems.every(item => item.checked) ? 'すべてOFF' : 'すべてON'}
+            </button>
+          </div>
         )}
         <ItemList
           items={displayedItems}
