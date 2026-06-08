@@ -1,4 +1,5 @@
 import React from "react";
+import { CATEGORY_NAME_MAX_LENGTH } from "../constants";
 
 export type Category = {
   id: string;
@@ -76,38 +77,44 @@ function CategoryTabs({
             onClick={() => onDeleteCategory(activeTab)}
             className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
           >
-            🗑 カテゴリを削除
+            カテゴリを削除
           </button>
         )}
       </div>
       {showAddForm && (
-        <div className="flex gap-2 mt-2">
-          <input
-            type="text"
-            value={newCategoryName}
-            onChange={(e) => setNewCategoryName(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleAdd();
-              if (e.key === 'Escape') handleCancel();
-            }}
-            placeholder="カテゴリ名を入力..."
-            autoFocus
-            className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-blue-400"
-          />
-          <button
-            type="button"
-            onClick={handleAdd}
-            className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1.5 rounded-lg"
-          >
-            追加
-          </button>
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm px-3 py-1.5 rounded-lg"
-          >
-            キャンセル
-          </button>
+        <div className="mt-2">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleAdd();
+                if (e.key === 'Escape') handleCancel();
+              }}
+              placeholder="カテゴリ名を入力..."
+              maxLength={CATEGORY_NAME_MAX_LENGTH}
+              autoFocus
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-blue-400"
+            />
+            <button
+              type="button"
+              onClick={handleAdd}
+              className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1.5 rounded-lg"
+            >
+              追加
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm px-3 py-1.5 rounded-lg"
+            >
+              キャンセル
+            </button>
+          </div>
+          {newCategoryName.length === CATEGORY_NAME_MAX_LENGTH && (
+            <p className="text-xs text-red-500 mt-1">文字数が長すぎます</p>
+          )}
         </div>
       )}
     </div>

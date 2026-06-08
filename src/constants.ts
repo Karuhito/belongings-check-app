@@ -1,0 +1,2 @@
+export const CATEGORY_NAME_MAX_LENGTH = 15;
+export const ITEM_LABEL_MAX_LENGTH = 50;
