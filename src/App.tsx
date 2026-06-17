@@ -4,6 +4,7 @@ import AddItemForm from "./components/AddItemForm";
 import ItemList from "./components/ItemList";
 import CategoryTabs from "./components/CategoryTabs";
 import type { Category } from "./components/CategoryTabs";
+import ConfirmModal from "./components/ConfirmModal";
 import "./App.css";
 
 type Item = {
@@ -60,6 +61,7 @@ function App() {
   const [categories, setCategories] = React.useState<Category[]>(_initialState.categories);
   const [items, setItems] = React.useState<Item[]>(_initialState.items);
   const [activeTab, setActiveTab] = React.useState<string>('all');
+  const [pendingDeleteCategoryId, setPendingDeleteCategoryId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     localStorage.setItem('belongings', JSON.stringify(items));
@@ -76,9 +78,15 @@ function App() {
   };
 
   const handleDeleteCategory = (id: string) => {
-    setCategories(categories.filter((c) => c.id !== id));
-    setItems(items.filter((item) => item.categoryId !== id));
+    setPendingDeleteCategoryId(id);
+  };
+
+  const confirmDeleteCategory = () => {
+    if (pendingDeleteCategoryId === null) return;
+    setCategories(categories.filter((c) => c.id !== pendingDeleteCategoryId));
+    setItems(items.filter((item) => item.categoryId !== pendingDeleteCategoryId));
     setActiveTab('all');
+    setPendingDeleteCategoryId(null);
   };
 
   const handleAdd = (label: string) => {
@@ -105,6 +113,13 @@ function App() {
   const displayedItems = activeTab === 'all'
     ? items
     : items.filter((item) => item.categoryId === activeTab);
+
+  const pendingDeleteCategory = pendingDeleteCategoryId === null
+    ? null
+    : categories.find((c) => c.id === pendingDeleteCategoryId) ?? null;
+  const pendingDeleteItemCount = pendingDeleteCategoryId === null
+    ? 0
+    : items.filter((item) => item.categoryId === pendingDeleteCategoryId).length;
 
   const handleToggleAll = () => {
     const allChecked = displayedItems.length > 0 && displayedItems.every(item => item.checked);
@@ -152,6 +167,18 @@ function App() {
           onDelete={activeTab !== 'all' ? handleDelete : undefined}
         />
       </div>
+      {pendingDeleteCategory && (
+        <ConfirmModal
+          title="カテゴリを削除しますか？"
+          message={
+            pendingDeleteItemCount > 0
+              ? `「${pendingDeleteCategory.name}」とその中の${pendingDeleteItemCount}件のアイテムが削除されます。この操作は元に戻せません。`
+              : `「${pendingDeleteCategory.name}」を削除します。この操作は元に戻せません。`
+          }
+          onConfirm={confirmDeleteCategory}
+          onCancel={() => setPendingDeleteCategoryId(null)}
+        />
+      )}
     </div>
   );
 }
