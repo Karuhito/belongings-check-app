@@ -25,5 +25,5 @@ dist-ssr
 
 .omc
 .playwright-mcp/
-.docs/superpowers/
-.superpowers/brainstorm/
+docs/superpowers/
+.superpowers/
