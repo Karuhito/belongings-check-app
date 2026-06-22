@@ -33,9 +33,15 @@ function AddItemForm({ onAdd }: Props) {
                     追加
                 </button>
             </div>
-            {inputValue.length === ITEM_LABEL_MAX_LENGTH && (
-                <p className="text-xs text-red-500 mt-1">文字数が長すぎます</p>
-            )}
+            <p
+              className={`text-xs mt-1 text-right ${
+                inputValue.length === ITEM_LABEL_MAX_LENGTH
+                  ? 'text-orange-500'
+                  : 'text-gray-400'
+              }`}
+            >
+                {inputValue.length}/{ITEM_LABEL_MAX_LENGTH}
+            </p>
         </div>
     )
 }

@@ -112,9 +112,15 @@ function CategoryTabs({
               キャンセル
             </button>
           </div>
-          {newCategoryName.length === CATEGORY_NAME_MAX_LENGTH && (
-            <p className="text-xs text-red-500 mt-1">文字数が長すぎます</p>
-          )}
+          <p
+            className={`text-xs mt-1 text-right ${
+              newCategoryName.length === CATEGORY_NAME_MAX_LENGTH
+                ? 'text-orange-500'
+                : 'text-gray-400'
+            }`}
+          >
+            {newCategoryName.length}/{CATEGORY_NAME_MAX_LENGTH}
+          </p>
         </div>
       )}
     </div>
