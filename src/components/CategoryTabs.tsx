@@ -87,7 +87,7 @@ function CategoryTabs({
             <input
               type="text"
               value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
+              onChange={(e) => setNewCategoryName(e.target.value.slice(0, CATEGORY_NAME_MAX_LENGTH))}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleAdd();
                 if (e.key === 'Escape') handleCancel();
@@ -112,9 +112,15 @@ function CategoryTabs({
               キャンセル
             </button>
           </div>
-          {newCategoryName.length === CATEGORY_NAME_MAX_LENGTH && (
-            <p className="text-xs text-red-500 mt-1">文字数が長すぎます</p>
-          )}
+          <p
+            className={`text-xs mt-1 text-right ${
+              newCategoryName.length >= CATEGORY_NAME_MAX_LENGTH
+                ? 'text-orange-500'
+                : 'text-gray-400'
+            }`}
+          >
+            {newCategoryName.length}/{CATEGORY_NAME_MAX_LENGTH}
+          </p>
         </div>
       )}
     </div>
