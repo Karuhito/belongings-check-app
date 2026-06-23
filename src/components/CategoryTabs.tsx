@@ -87,7 +87,7 @@ function CategoryTabs({
             <input
               type="text"
               value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
+              onChange={(e) => setNewCategoryName(e.target.value.slice(0, CATEGORY_NAME_MAX_LENGTH))}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleAdd();
                 if (e.key === 'Escape') handleCancel();

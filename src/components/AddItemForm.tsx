@@ -20,7 +20,7 @@ function AddItemForm({ onAdd }: Props) {
                 <input
                   type="text"
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={(e) => setInputValue(e.target.value.slice(0, ITEM_LABEL_MAX_LENGTH))}
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                   placeholder="アイテムを入力..."
                   maxLength={ITEM_LABEL_MAX_LENGTH}
