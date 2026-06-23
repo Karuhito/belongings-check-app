@@ -35,7 +35,7 @@ function AddItemForm({ onAdd }: Props) {
             </div>
             <p
               className={`text-xs mt-1 text-right ${
-                inputValue.length === ITEM_LABEL_MAX_LENGTH
+                inputValue.length >= ITEM_LABEL_MAX_LENGTH
                   ? 'text-orange-500'
                   : 'text-gray-400'
               }`}

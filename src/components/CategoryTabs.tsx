@@ -114,7 +114,7 @@ function CategoryTabs({
           </div>
           <p
             className={`text-xs mt-1 text-right ${
-              newCategoryName.length === CATEGORY_NAME_MAX_LENGTH
+              newCategoryName.length >= CATEGORY_NAME_MAX_LENGTH
                 ? 'text-orange-500'
                 : 'text-gray-400'
             }`}
