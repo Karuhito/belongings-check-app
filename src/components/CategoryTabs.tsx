@@ -1,10 +1,6 @@
 import React from "react";
 import { CATEGORY_NAME_MAX_LENGTH } from "../constants";
-
-export type Category = {
-  id: string;
-  name: string;
-};
+import type { Category } from "../types";
 
 type Props = {
   categories: Category[];

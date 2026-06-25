@@ -1,10 +1,5 @@
 import ItemCard from "./ItemCard";
-
-type Item = {
-  id: string;
-  label: string;
-  checked: boolean;
-};
+import type { Item } from "../types";
 
 type Props = {
   items: Item[];
