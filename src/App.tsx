@@ -3,17 +3,11 @@ import Header from "./components/Header";
 import AddItemForm from "./components/AddItemForm";
 import ItemList from "./components/ItemList";
 import CategoryTabs from "./components/CategoryTabs";
-import type { Category } from "./components/CategoryTabs";
+import type { Item } from "./types";
+import type { Category } from "./types";
 import ConfirmModal from "./components/ConfirmModal";
 import { saveToStorage } from "./utils/storage";
 import "./App.css";
-
-type Item = {
-  id: string;
-  label: string;
-  checked: boolean;
-  categoryId: string;
-};
 
 type LegacyItem = {
   id: string;
