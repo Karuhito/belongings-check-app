@@ -16,7 +16,7 @@ function setup(overrides: Partial<ComponentProps<typeof CategoryTabs>> = {}) {
     categories,
     activeTab: 'all',
     onTabChange: vi.fn(),
-    onAddCategory: vi.fn(),
+    onAddCategory: vi.fn(() => true),
     onDeleteCategory: vi.fn(),
     ...overrides,
   };
@@ -70,5 +70,32 @@ describe('CategoryTabs', () => {
 
     const counter = screen.getByText(`${CATEGORY_NAME_MAX_LENGTH}/${CATEGORY_NAME_MAX_LENGTH}`);
     expect(counter).toHaveClass('text-orange-500');
+  });
+
+  it('onAddCategoryがfalseを返すとエラーが表示され、フォームと入力が保持される', async () => {
+    const user = userEvent.setup();
+    setup({ onAddCategory: vi.fn(() => false) });
+
+    await user.click(screen.getByRole('button', { name: '＋' }));
+    const input = screen.getByPlaceholderText('カテゴリ名を入力...');
+    await user.type(input, '旅行');
+    await user.click(screen.getByRole('button', { name: '追加' }));
+
+    expect(screen.getByText('「旅行」は既に登録されています')).toBeInTheDocument();
+    expect(input).toHaveValue('旅行');
+  });
+
+  it('エラー表示後に入力を変更するとエラーが消える', async () => {
+    const user = userEvent.setup();
+    setup({ onAddCategory: vi.fn(() => false) });
+
+    await user.click(screen.getByRole('button', { name: '＋' }));
+    const input = screen.getByPlaceholderText('カテゴリ名を入力...');
+    await user.type(input, '旅行');
+    await user.click(screen.getByRole('button', { name: '追加' }));
+    expect(screen.getByText('「旅行」は既に登録されています')).toBeInTheDocument();
+
+    await user.type(input, 'X');
+    expect(screen.queryByText('「旅行」は既に登録されています')).not.toBeInTheDocument();
   });
 });
