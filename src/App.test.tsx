@@ -95,4 +95,36 @@ describe('App', () => {
     expect(screen.getByText('カテゴリタブでアイテムを追加・削除できます')).toBeInTheDocument();
     expect(screen.queryByText('パスポート')).not.toBeInTheDocument();
   });
+
+  it('同一カテゴリ内に同名アイテムは追加できない', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await addCategory(user, '旅行');
+    await addItem(user, '財布');
+    await addItem(user, '財布');
+
+    // 重複は弾かれ、「財布」は1件のみ
+    expect(screen.getAllByText('財布')).toHaveLength(1);
+  });
+
+  it('同名カテゴリは追加できない', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await addCategory(user, '旅行');
+
+    // 2回目のカテゴリ追加試行
+    await user.click(screen.getByRole('button', { name: '＋' }));
+    const categoryInput = screen.getByPlaceholderText('カテゴリ名を入力...');
+    await user.type(categoryInput, '旅行');
+
+    // カテゴリ追加フォーム内の「追加」ボタンのみを対象にする
+    const addButtons = screen.getAllByRole('button', { name: '追加' });
+    // カテゴリフォーム内のボタン（通常は最初の方）
+    await user.click(addButtons[0]);
+
+    // 重複は弾かれ、「旅行」タブは1つのみ
+    expect(screen.getAllByRole('button', { name: '旅行' })).toHaveLength(1);
+  });
 });
