@@ -2,15 +2,21 @@ import React from "react";
 import { ITEM_LABEL_MAX_LENGTH } from "../constants";
 
 type Props = {
-    onAdd : (label: string) => void
+    onAdd : (label: string) => boolean
 }
 
 function AddItemForm({ onAdd }: Props) {
     const [inputValue, setInputValue] = React.useState('');
+    const [error, setError] = React.useState('');
 
     const handleSubmit = () => {
         if (inputValue.trim() === '') return
-        onAdd(inputValue.trim())
+        const added = onAdd(inputValue.trim())
+        if (!added) {
+            setError(`「${inputValue.trim()}」はこのカテゴリに既に登録されています`)
+            return
+        }
+        setError('')
         setInputValue('')
     }
 
@@ -20,7 +26,10 @@ function AddItemForm({ onAdd }: Props) {
                 <input
                   type="text"
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value.slice(0, ITEM_LABEL_MAX_LENGTH))}
+                  onChange={(e) => {
+                    setInputValue(e.target.value.slice(0, ITEM_LABEL_MAX_LENGTH))
+                    if (error) setError('')
+                  }}
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                   placeholder="アイテムを入力..."
                   maxLength={ITEM_LABEL_MAX_LENGTH}
@@ -42,6 +51,9 @@ function AddItemForm({ onAdd }: Props) {
             >
                 {inputValue.length}/{ITEM_LABEL_MAX_LENGTH}
             </p>
+            {error && (
+                <p className="text-xs mt-1 text-red-500">{error}</p>
+            )}
         </div>
     )
 }

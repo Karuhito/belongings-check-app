@@ -6,7 +6,7 @@ type Props = {
   categories: Category[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
-  onAddCategory: (name: string) => void;
+  onAddCategory: (name: string) => boolean;
   onDeleteCategory: (id: string) => void;
 };
 
@@ -19,16 +19,23 @@ function CategoryTabs({
 }: Props) {
   const [showAddForm, setShowAddForm] = React.useState(false);
   const [newCategoryName, setNewCategoryName] = React.useState('');
+  const [error, setError] = React.useState('');
 
   const handleAdd = () => {
     if (newCategoryName.trim() === '') return;
-    onAddCategory(newCategoryName.trim());
+    const added = onAddCategory(newCategoryName.trim());
+    if (!added) {
+      setError(`「${newCategoryName.trim()}」は既に登録されています`);
+      return;
+    }
     setNewCategoryName('');
+    setError('');
     setShowAddForm(false);
   };
 
   const handleCancel = () => {
     setNewCategoryName('');
+    setError('');
     setShowAddForm(false);
   };
 
@@ -83,7 +90,10 @@ function CategoryTabs({
             <input
               type="text"
               value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value.slice(0, CATEGORY_NAME_MAX_LENGTH))}
+              onChange={(e) => {
+                setNewCategoryName(e.target.value.slice(0, CATEGORY_NAME_MAX_LENGTH))
+                if (error) setError('')
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleAdd();
                 if (e.key === 'Escape') handleCancel();
@@ -117,6 +127,9 @@ function CategoryTabs({
           >
             {newCategoryName.length}/{CATEGORY_NAME_MAX_LENGTH}
           </p>
+          {error && (
+            <p className="text-xs mt-1 text-right text-red-500">{error}</p>
+          )}
         </div>
       )}
     </div>

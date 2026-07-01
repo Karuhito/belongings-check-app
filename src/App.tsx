@@ -7,6 +7,7 @@ import type { Item } from "./types";
 import type { Category } from "./types";
 import ConfirmModal from "./components/ConfirmModal";
 import { saveToStorage } from "./utils/storage";
+import { isDuplicateCategoryName, isDuplicateItemLabel } from "./utils/duplicateCheck";
 import "./App.css";
 
 type LegacyItem = {
@@ -73,10 +74,12 @@ function App() {
     setCategoriesSaveFailed(!saveToStorage('categories', next));
   };
 
-  const handleAddCategory = (name: string) => {
-    const newCategory: Category = { id: crypto.randomUUID(), name };
+  const handleAddCategory = (name: string): boolean => {
+    if (isDuplicateCategoryName(categories, name)) return false;
+    const newCategory: Category = { id: crypto.randomUUID(), name: name.trim() };
     persistCategories([...categories, newCategory]);
     setActiveTab(newCategory.id);
+    return true;
   };
 
   const handleDeleteCategory = (id: string) => {
@@ -91,15 +94,17 @@ function App() {
     setPendingDeleteCategoryId(null);
   };
 
-  const handleAdd = (label: string) => {
-    if (activeTab === 'all') return;
+  const handleAdd = (label: string): boolean => {
+    if (activeTab === 'all') return false;
+    if (isDuplicateItemLabel(items, activeTab, label)) return false;
     const newItem: Item = {
       id: crypto.randomUUID(),
-      label,
+      label: label.trim(),
       checked: false,
       categoryId: activeTab,
     };
     persistItems([...items, newItem]);
+    return true;
   };
 
   const handleToggle = (id: string) => {
